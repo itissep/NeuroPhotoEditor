@@ -3,8 +3,9 @@ import CoreImage
 import Vision
 import CoreImage.CIFilterBuiltins
 
-class EyeEnlargementService {
-    static func enlargeEyes(
+class EnlargementService {
+    
+    static func execute(
         on image: UIImage,
         eyesScale: CGFloat,
         faceScale: CGFloat,
@@ -17,17 +18,13 @@ class EyeEnlargementService {
             return
         }
         
-        // Создаем запрос для распознавания лиц
         let request = VNDetectFaceLandmarksRequest { (request, error) in
             guard let results = request.results as? [VNFaceObservation], !results.isEmpty else {
                 completion(nil)
                 return
             }
-            
-            // Преобразуем изображение в CIImage для дальнейшей обработки
             var ciImage = CIImage(cgImage: cgImage)
             
-            // Обрабатываем каждое лицо
             for face in results {
                 if let landmarks = face.landmarks {
                     
@@ -72,7 +69,6 @@ class EyeEnlargementService {
                 }
             }
             
-            // Конвертируем обработанное изображение обратно в UIImage
             let context = CIContext()
             if let outputCGImage = context.createCGImage(ciImage, from: ciImage.extent) {
                 completion(UIImage(cgImage: outputCGImage))
@@ -81,7 +77,6 @@ class EyeEnlargementService {
             }
         }
         
-        // Создаем обработчик изображения
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         do {
             try handler.perform([request])

@@ -1,16 +1,15 @@
 import SwiftUI
-import Vision
 
 struct ContentView: View {
-    @State var inputImage: UIImage?
-    @State var outputImage: UIImage?
+    @State private var inputImage: UIImage?
+    @State private var outputImage: UIImage?
     @State private var showingImagePicker = false
     
-    @State var faceOvalScale: CGFloat = 0
-    @State var eyeScale: CGFloat = 0
-    @State var noseScale: CGFloat = 0
-    @State var lipsScale: CGFloat = 0
-    @State var browsScale: CGFloat = 0
+    @State private var faceOvalScale: CGFloat = 0
+    @State private var eyeScale: CGFloat = 0
+    @State private var noseScale: CGFloat = 0
+    @State private var lipsScale: CGFloat = 0
+    @State private var browsScale: CGFloat = 0
     
     var body: some View {
         VStack {
@@ -42,7 +41,6 @@ struct ContentView: View {
                                         .monospaced()
                                         .foregroundStyle(.text)
                                 }
-                            
                         } else {
                             RoundedRectangle(cornerRadius: Constants.cornerRadius)
                                 .foregroundStyle(Constants.secondaryBackground)
@@ -97,21 +95,6 @@ struct ContentView: View {
                     RoundedRectangle(cornerRadius: Constants.cornerRadius)
                         .foregroundStyle(.accent)
                 }
-                
-                
-                Button("drow face features") {
-                    if inputImage != nil {
-                        drawFeatures()
-                    }
-                }
-                .monospaced()
-                .frame(maxWidth: .infinity)
-                .frame(height: Constants.buttonHeight)
-                .background {
-                    RoundedRectangle(cornerRadius: Constants.cornerRadius)
-                        .foregroundStyle(Constants.secondaryBackground)
-                }
-                .disabled(inputImage == nil)
             }
             .padding()
         }
@@ -124,7 +107,7 @@ struct ContentView: View {
     
     private func update() {
         if let inputImage {
-            EyeEnlargementService.enlargeEyes(
+            EnlargementService.execute(
                 on: inputImage,
                 eyesScale: eyeScale,
                 faceScale: faceOvalScale,
