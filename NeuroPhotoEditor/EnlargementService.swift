@@ -8,6 +8,7 @@ class EnlargementService {
     static func execute(
         on image: UIImage,
         eyesScale: CGFloat,
+        browsScale: CGFloat,
         faceScale: CGFloat,
         noseScale: CGFloat,
         lipsScale: CGFloat,
@@ -28,11 +29,19 @@ class EnlargementService {
             for face in results {
                 if let landmarks = face.landmarks {
                     
-                    if let facePoints = landmarks.faceContour?.normalizedPoints {
+                    if let leftEyebrowPoints = landmarks.leftEyebrow?.normalizedPoints {
                         ciImage = edit(
-                            unnormalize(facePoints, boundingBox: face.boundingBox, imageSize: image.size),
+                            unnormalize(leftEyebrowPoints, boundingBox: face.boundingBox, imageSize: image.size),
                             on: ciImage,
-                            with: faceScale
+                            with: browsScale
+                        )
+                    }
+                    
+                    if let rightEyebrowPoints = landmarks.rightEyebrow?.normalizedPoints {
+                        ciImage = edit(
+                            unnormalize(rightEyebrowPoints, boundingBox: face.boundingBox, imageSize: image.size),
+                            on: ciImage,
+                            with: browsScale
                         )
                     }
                     
@@ -64,6 +73,14 @@ class EnlargementService {
                             unnormalize(lipsPoints, boundingBox: face.boundingBox, imageSize: image.size),
                             on: ciImage,
                             with: lipsScale
+                        )
+                    }
+                    
+                    if let facePoints = landmarks.faceContour?.normalizedPoints {
+                        ciImage = edit(
+                            unnormalize(facePoints, boundingBox: face.boundingBox, imageSize: image.size),
+                            on: ciImage,
+                            with: faceScale
                         )
                     }
                 }

@@ -72,7 +72,7 @@ struct ContentView: View {
                 }
                 VStack(alignment: .leading) {
                     SliderLabel(text:"brows")
-                    Slider(value: $browsScale, in: 0...1.5, step: 0.1) { _ in update() }
+                    Slider(value: $browsScale, in: 0...1.0, step: 0.1) { _ in update() }
                 }
                 VStack(alignment: .leading) {
                     SliderLabel(text: "face")
@@ -110,6 +110,7 @@ struct ContentView: View {
             EnlargementService.execute(
                 on: inputImage,
                 eyesScale: eyeScale,
+                browsScale: browsScale,
                 faceScale: faceOvalScale,
                 noseScale: noseScale,
                 lipsScale: lipsScale
